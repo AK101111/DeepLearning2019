@@ -22,7 +22,7 @@ class Model(nn.Module):
 
         # Load pre-trained weights in current model
         with torch.no_grad():
-            self.model.load_state_dict(pretrained_model, strict=True)
+            self.model_.load_state_dict(pretrained_model, strict=True)
 
         # Debug loading
         print('Parameters found in pretrained model:')
@@ -31,7 +31,7 @@ class Model(nn.Module):
             print('\t' + l)
         print('')
 
-        for name, module in self.state_dict().items():
+        for name, module in self.model_.state_dict().items():
             if name in pretrained_layers:
                 assert torch.equal(pretrained_model[name].cpu(), module.cpu())
                 print('{} have been loaded correctly in current model.'.format(name))
@@ -39,4 +39,4 @@ class Model(nn.Module):
                 raise ValueError("state_dict() keys do not match")
 
     def forward(self, x):
-        return self.model(x)
+        return self.model_(x)
