@@ -1,12 +1,17 @@
 import torch
 import torch.nn as nn
+import torch.optim as optim
+import numpy as np
+import torchvision
+from torchvision import datasets, models, transforms
+from torch.utils.data import DataLoader, Subset
+import os
 
 class Model(nn.Module):
     def __init__(self):
         super(Model, self).__init__()
-
+        self.model_ = models.resnet18()
         # Architecture
-        # TODO
 
         # Load pre-trained model
         self.load_weights('weights.pth')
@@ -17,7 +22,7 @@ class Model(nn.Module):
 
         # Load pre-trained weights in current model
         with torch.no_grad():
-            self.load_state_dict(pretrained_model, strict=True)
+            self.model.load_state_dict(pretrained_model, strict=True)
 
         # Debug loading
         print('Parameters found in pretrained model:')
@@ -34,5 +39,4 @@ class Model(nn.Module):
                 raise ValueError("state_dict() keys do not match")
 
     def forward(self, x):
-        # TODO
-        raise NotImplementedError
+        return self.model(x)
